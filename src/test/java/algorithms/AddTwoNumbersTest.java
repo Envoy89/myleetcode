@@ -4,24 +4,21 @@ import lombok.AllArgsConstructor;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import static algorithms.Utils.assertTwoList;
+import static algorithms.Utils.generateListNodeFromArray;
 import static org.junit.jupiter.api.Assertions.*;
+
+import algorithms.entity.ListNode;
 
 class AddTwoNumbersTest {
 
     @ParameterizedTest
     @MethodSource("testCases")
     public void test(TestCase testCase) {
-        AddTwoNumbers.ListNode actualResult = AddTwoNumbers.addTwoNumbers(testCase.l1, testCase.l2);
-        AddTwoNumbers.ListNode expectedResult = testCase.result;
+        ListNode actualResult = AddTwoNumbers.addTwoNumbers(testCase.l1, testCase.l2);
+        ListNode expectedResult = testCase.result;
 
-        while (actualResult != null || expectedResult != null) {
-            assertNotNull(actualResult);
-            assertNotNull(expectedResult);
-            assertEquals(actualResult.val, expectedResult.val);
-
-            actualResult = actualResult.next;
-            expectedResult = expectedResult.next;
-        }
+        assertTwoList(actualResult, expectedResult);
     }
 
     private static TestCase[] testCases() {
@@ -49,28 +46,10 @@ class AddTwoNumbersTest {
         };
     }
 
-    private static AddTwoNumbers.ListNode generateListNodeFromArray(int[] nums) {
-        AddTwoNumbers.ListNode listNode = new AddTwoNumbers.ListNode();
-        AddTwoNumbers.ListNode intermediateNode = listNode;
-
-        for (int i = 0; i < nums.length; i++) {
-            intermediateNode.val = nums[i];
-
-            if (i < nums.length - 1) {
-                AddTwoNumbers.ListNode nextListNode = new AddTwoNumbers.ListNode();
-                intermediateNode.next = nextListNode;
-
-                intermediateNode = nextListNode;
-            }
-        }
-
-        return listNode;
-    }
-
     @AllArgsConstructor
     private static class TestCase {
-        AddTwoNumbers.ListNode l1;
-        AddTwoNumbers.ListNode l2;
-        AddTwoNumbers.ListNode result;
+        ListNode l1;
+        ListNode l2;
+        ListNode result;
     }
 }
